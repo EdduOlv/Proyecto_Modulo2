@@ -1,29 +1,32 @@
 function validarNumero(numero) {
    if (isNaN(numero) || numero == "") {
-    return true
+        return true;
    } else {
-    return false    
-   }
+        return false;
+   };
    
+};
+function validarEnunciado(enunciado) {
+    if (enunciado == "") {
+        return true;
+   } else {
+        return false;
+   };
 }
-const participantes = []
-const preguntas = []
-
-function validarOpciones (voto,indice) {
-   
-   if (preguntas[indice].opciones.includes(voto)) {
-        return false
+function opcionesValidas(opcion1,opcion2,opcion3) {
+    if (opcion1 == "" || opcion2 == "" || opcion3 == "" ) {
+        return true;
     } else {
-        return true
+        return false;
     }
 }
-
-function soloOpciones(preguntas) {
-    return preguntas.reduce((acumulador, pregunta) => {
-        acumulador.push(pregunta.opciones);
-        return acumulador
-    },[])
-}   
+function validarOpciones (voto,indice) {
+   if (preguntas[indice].opciones.includes(voto)) {
+        return false;
+    } else {
+        return true;
+    };
+};
 
 const recopilarVotos = (...votos) => {
     return votos.reduce((arregloAcumulador, votos) => {
@@ -36,98 +39,94 @@ const generarPregunta = (pregunta,opciones) =>{
         pregunta,
         opciones,
     };
-}
-const generarParticipante = (name, edad, sexo, pais) => {
+};
+const generarParticipante = (name, age, gender, country) => {
     return {
       name,
-      edad,
-      sexo,
-      pais,
+      age,
+      gender,
+      country,
       
     };
 };  
 
-function funcionIteracion(tamaño1,tamaño2) {
-    return Array.from({ length: tamaño1 + tamaño2 });
-}
+function contarVotos(arr) {
+    return arr.reduce((ocurrencias, elemento) => {
+        return { ...ocurrencias, [elemento]: (ocurrencias[elemento] || 0) + 1 };
+    }, {});
+};
 
-const personas = 1
-const preguntasAHacer = 1  
+function soloOpciones(participantes) {
+    return participantes.map(participante => participante.votos).flat();
+};
 
+const participantes = [];
+const preguntas = [];
+
+let personas = prompt("Cuantas personas participan")
 while (validarNumero(personas)) {
-    console.log(validarNumero(personas));
-    alert("Introduce una opcion valida")
+    alert("Introduce una opcion valida");
     personas = prompt("¿Cuantas personas participaran en la votacion?");
-    validarNumero(personas)
-}
+    validarNumero(personas);
+};
 
+let preguntasAHacer = prompt("Numero de preguntas a hacer") 
+while (validarNumero(preguntasAHacer)) {
+    alert("Introduce una opcion valida");
+    preguntasAHacer = prompt("Numero de preguntas a hacer");
+    validarNumero(preguntasAHacer);
+};
 
-for (let i = 1; i <= (personas+preguntasAHacer); i++) {
+for (let i = 1; i <= parseInt(personas) + parseInt(preguntasAHacer); i++) {
 
     if (i <= personas ) {
-        let name = "nombre"
-        let age = "age"
-        let sexo = "sexo"
-        let pais = "pais"
-        participantes.push(generarParticipante(name,age,sexo,pais))
-        console.log(participantes);
-    }
+        let name = prompt("Nombre del participante "+ i);
+        let age = prompt("Edad del participante "+ i);
+        let gender = prompt("Genero del participante "+ i);
+        let country = prompt("Pais del participante "+ i);
+        participantes.push(generarParticipante(name,age,gender,country));
+    };
     
-    if ((i > personas) && i <=(personas+preguntasAHacer) ) {
-        let pregunta = "numeros"
-        let opcion1 = "1"
-        let opcion2 = "2"
-        let opcion3 = "3"
-        preguntas.push(generarPregunta(pregunta,recopilarVotos(opcion1,opcion2,opcion3)))
-        console.log(preguntas);
+    if (i > personas && i <= parseInt(personas) + parseInt(preguntasAHacer)) {
+        let pregunta = prompt("Enunciado de lapregunta "+ (i-personas));
+        while (validarEnunciado(pregunta)) {
+            alert("El enunciado no puede estar vacio");
+            pregunta = prompt("Enunciado de lapregunta "+ (i-personas));
+            validarEnunciado(pregunta);
+        }
+        let opcion1 = prompt("Opcion 1");
+        let opcion2 = prompt("Opcion 2");
+        let opcion3 = prompt("Opcion 3");
+        while (opcionesValidas(opcion1,opcion2,opcion3)) {
+            alert("Ninguna de las opciones puede estar vacia")
+            opcion1 = prompt("Opcion 1");
+            opcion2 = prompt("Opcion 2");
+            opcion3 = prompt("Opcion 3");
+            opcionesValidas(opcion1,opcion2,opcion3);
+        }   
+        preguntas.push(generarPregunta(pregunta,recopilarVotos(opcion1,opcion2,opcion3)));
     }
 }
-// preguntas.push([4,5,6])
+console.log(participantes+ " sin votar");
 console.log(preguntas);
 for (let i = 0; i < participantes.length; i++) {
-    let votosPush = []
+    let votosPush = [];
     for (let j = 0; j < preguntas.length; j++) {
-        console.log(j);
-        let votoEntrada = "a"
-        console.log((preguntas[j].opciones));
-        console.log(validarOpciones(votoEntrada,j));
+        alert("Encuesta participante " + (i + 1) )
+        alert(preguntas[j].pregunta.toUpperCase());
+        let votoEntrada = prompt(preguntas[j].opciones.join(' - '));
         while (validarOpciones(votoEntrada,j)) {
-            console.log("Una o mas opciones que elegiste no es valida, vuelve a votar");
-            votoEntrada = "1"
+            alert("Introduce una opcion valida");
+            votoEntrada = prompt(preguntas[j].opciones.join(' - '))
             validarOpciones(votoEntrada,j)
         }
-        votosPush.push(votoEntrada)
+        votosPush.push(votoEntrada);
     }
-    participantes[i].votos = votosPush
-    console.log(participantes[i]);
+    participantes[i].votos = votosPush;
 }
 
-
-
-
-
-
-
-
-  
-console.log(preguntas);
-todasLasOpciones = (soloOpciones(preguntasxd));
-console.log(todasLasOpciones[0]);
-console.log(soloOpciones(preguntas));
-
-  
- 
-  
-
-// ARREGLO DE PARTICIPANTES[0].votos = recopilarVotos(name,age,sexo,pais) IMPORTANTE
-
-
-
-
-
-
-
-
+console.log(participantes+ " con voto")
+console.log(contarVotos(soloOpciones(participantes)))
 
 
 
