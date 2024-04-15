@@ -4,7 +4,6 @@ function validarNumero(numero) {
    } else {
         return false;
    };
-   
 };
 function validarEnunciado(enunciado) {
     if (enunciado == "") {
@@ -63,16 +62,16 @@ function soloOpciones(participantes) {
 const participantes = [];
 const preguntas = [];
 
-let personas = prompt("Cuantas personas participan")
+let personas = prompt("Cuantas personas participan");
 while (validarNumero(personas)) {
-    alert("Introduce una opcion valida");
+    alert("Introduce numero valido");
     personas = prompt("¿Cuantas personas participaran en la votacion?");
     validarNumero(personas);
 };
 
-let preguntasAHacer = prompt("Numero de preguntas a hacer") 
+let preguntasAHacer = prompt("Numero de preguntas a hacer");
 while (validarNumero(preguntasAHacer)) {
-    alert("Introduce una opcion valida");
+    alert("Introduce un numero valido");
     preguntasAHacer = prompt("Numero de preguntas a hacer");
     validarNumero(preguntasAHacer);
 };
@@ -88,12 +87,12 @@ for (let i = 1; i <= parseInt(personas) + parseInt(preguntasAHacer); i++) {
     };
     
     if (i > personas && i <= parseInt(personas) + parseInt(preguntasAHacer)) {
-        let pregunta = prompt("Enunciado de lapregunta "+ (i-personas));
+        let pregunta = prompt("Enunciado de la pregunta "+ (i-personas));
         while (validarEnunciado(pregunta)) {
             alert("El enunciado no puede estar vacio");
-            pregunta = prompt("Enunciado de lapregunta "+ (i-personas));
+            pregunta = prompt("Enunciado de la pregunta "+ (i-personas));
             validarEnunciado(pregunta);
-        }
+        };
         let opcion1 = prompt("Opcion 1");
         let opcion2 = prompt("Opcion 2");
         let opcion3 = prompt("Opcion 3");
@@ -103,35 +102,33 @@ for (let i = 1; i <= parseInt(personas) + parseInt(preguntasAHacer); i++) {
             opcion2 = prompt("Opcion 2");
             opcion3 = prompt("Opcion 3");
             opcionesValidas(opcion1,opcion2,opcion3);
-        }   
+        };
         preguntas.push(generarPregunta(pregunta,recopilarVotos(opcion1,opcion2,opcion3)));
-    }
-}
-console.log(participantes+ " sin votar");
-console.log(preguntas);
+    };
+};
 for (let i = 0; i < participantes.length; i++) {
     let votosPush = [];
     for (let j = 0; j < preguntas.length; j++) {
-        alert("Encuesta participante " + (i + 1) )
+        alert("Encuesta participante " + (i + 1));
         alert(preguntas[j].pregunta.toUpperCase());
         let votoEntrada = prompt(preguntas[j].opciones.join(' - '));
         while (validarOpciones(votoEntrada,j)) {
             alert("Introduce una opcion valida");
-            votoEntrada = prompt(preguntas[j].opciones.join(' - '))
-            validarOpciones(votoEntrada,j)
-        }
+            votoEntrada = prompt(preguntas[j].opciones.join(' - '));
+            validarOpciones(votoEntrada,j);
+        };
         votosPush.push(votoEntrada);
-    }
+    };
     participantes[i].votos = votosPush;
-}
+};
 
-console.log(participantes+ " con voto")
-console.log(contarVotos(soloOpciones(participantes)))
-
-
-
-
-
-
+function mostrarResultados(resultados) {
+    console.log("===========================================");
+    console.log("TABLA DE RESULTADOS");
+    return Object.entries(resultados).map(resultado => {
+       return console.log("Alternativa " + resultado[0] + " obtuvo : " + resultado[1] + " votos");
+    });
+};
+mostrarResultados(contarVotos(soloOpciones(participantes)));
 
 
