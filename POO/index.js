@@ -1,43 +1,38 @@
-class Participante {
-    constructor(name,age,sexo,pais,votos){
-       this.name = name;
-       this.age = age;
-       this.sexo = sexo;
-       this.pais = pais;
-       this.votos = votos;
-
-    };
-
+class Persona {
+    constructor(name,age,sexo,pais){
+        this.name = name;
+        this.age = age;
+        this.sexo = sexo;
+        this.pais = pais;
+    }
     inscribirse (){
-
         let personas = prompt("¿Cuantas personas participaran en la votacion?");
         while (isNaN(personas) || personas == "") {
-            alert("Introduce una opcion valida");
+            alert("Introduce un numero valido");
             personas = prompt("¿Cuantas personas participaran en la votacion?");
         };
         for (let i = 1; i <=personas;i++) {
-            let name, age, sexo, pais; // se pueden añadir propiedades si se quiere
-            for (let s= 0; s<=4; s++) { // modificar la evaluacion del ciclo por cada propiedad nueva
-                switch (s) {
-                    case 1:
-                        name = prompt("Nombre del participante "+ i);
-                        break;
-                    case 2:
-                        age = prompt("Edad del participante "+ i);
-                        break;
-                    case 3:
-                        sexo = prompt("Sexo del participante "+ i);
-                        break;
-                    case 4:
-                        pais = prompt("Pais del participante "+ i);
-                        participantes.push(new Participante(name,age,sexo,pais)) // esta linea tiene que estar en el case final del ultimo dato añadido
-                        break;
-                    default:
-                };
+            let name = prompt("Nombre del participante "+ i); // se pueden añadir propiedades si se quiere
+            let age = prompt("Edad del participante "+ i);
+            let sexo = prompt("Sexo del participante "+ i);
+            let pais = prompt("Pais del participante "+ i);
+            while (name == "" || age == "" || sexo == "" || pais == "") {
+                alert("Ningun dato puede estar vacio");
+                name = prompt("Nombre del participante "+ i);
+                age = prompt("Edad del participante "+ i);
+                sexo = prompt("Sexo del participante "+ i);
+                pais = prompt("Pais del participante "+ i);
             };
+            participantes.push(new Participante(name,age,sexo,pais)); // esta linea tiene que estar en el case final del ultimo dato añadido
         };
     };
+};
 
+class Participante extends Persona{
+    constructor(name,age,sexo,pais,votos){
+        super(name,age,sexo,pais);
+        this.votos = votos;
+    };
 
     votar (){
         for (let i = 0; i < participantes.length; i++) {
@@ -50,10 +45,9 @@ class Participante {
                     alert("Introduce una opcion valida");
                     votoEntrada = prompt(preguntas[j].opciones.join(' - '));
                 };
-                votosPush.push(votoEntrada)  ;
+                votosPush.push(votoEntrada);
             };
             participantes[i].votos = votosPush;
-            console.log(participantes[i]);;
         };
     };
 };
@@ -62,37 +56,33 @@ class Pregunta {
     constructor(pregunta,opciones){
         this.pregunta = pregunta;
         this.opciones = opciones ;
-    }
+    };
 
     preguntas (){
-        let quest = prompt("¿Cuantas preguntas quiere hacer?");
-        while (isNaN(quest) || quest == "") {
-            alert("Introduce una opcion valida");
-            quest = prompt("¿Cuantas preguntas quiere hacer?");
+        let question = prompt("¿Cuantas preguntas quiere hacer?");
+        while (isNaN(question) || question == "") {
+            alert("Introduce un numero valido");
+            question = prompt("¿Cuantas preguntas quiere hacer?");
         };
-        for (let i = 1; i <=quest;i++) {
-            let pregunta,opcion1,opcion2,opcion3;
+        for (let i = 1; i <=question;i++) {
             let opciones = [];
-            for (let s= 0; s<=4; s++) { // modificar la evaluacion del ciclo por cada dato nuevo
-                switch (s) {
-                    case 1:
-                        pregunta = prompt("enunciado de la pregunta "+ i);
-                        break;
-                    case 2:
-                        opcion1 = prompt("opcion 1");
-                        break;
-                    case 3:
-                        opcion2 = prompt("opcion 2");
-                        break;
-                    case 4:
-                        opcion3 = prompt("opcion 3");
-                        opciones.push(opcion1,opcion2,opcion3)
-                        preguntas.push(new Pregunta(pregunta,opciones)) // esta linea tiene que estar en el case final del ultimo dato añadido
-                        break;
-                    default:
-                };
+            let pregunta = prompt("Enunciado de la pregunta "+ i);
+            while (pregunta == "") {
+                alert("El enunciado no puede estar vacio");
+                pregunta = prompt("Enunciado de la pregunta "+ i);
             };
-        };;
+            let opcion1 = prompt("Opcion 1");
+            let opcion2 = prompt("Opcion 2");
+            let opcion3 = prompt("Opcion 3");
+            while (opcion1 == "" || opcion2 == "" || opcion3 == "") {
+                alert("Ninguna de las opciones puede estar vacia")
+                opcion1 = prompt("Opcion 1");
+                opcion2 = prompt("Opcion 2");
+                opcion3 = prompt("Opcion 3");
+            };
+            opciones.push(opcion1,opcion2,opcion3);
+            preguntas.push(new Pregunta(pregunta,opciones)); // esta linea tiene que estar en el case final del ultimo dato añadido
+        };
     };
 };
 
@@ -105,7 +95,6 @@ class Resultado {
     };
 
     resultados(){
-        const resultados = [];
         for (let i = 0; i < preguntas.length; i++) {
           let enunciado = preguntas[i].pregunta;
           let eleccion1, eleccion2, eleccion3;
@@ -131,35 +120,24 @@ class Resultado {
           participantes.forEach((votos,index) => {
             switch ((participantes[index].votos[i])) {
               case eleccion1:
-                cantidad1++
+                cantidad1++;
                 break;
               case eleccion2:
-                cantidad2++
+                cantidad2++;
                 break;
               case eleccion3:
-                cantidad3++
+                cantidad3++;
                 break;
               default:
                 break;
-            }
+            };
           });  
           resultados.push(new Resultado(enunciado,eleccion1,cantidad1,eleccion2,cantidad2,eleccion3,cantidad3));
-          console.log(resultados[i]);
-    
-    
-        }
-    }
-}
-
-
-class Inscripcion {
-    constructor(pregunta,opcion1,opcion2,opcion3){
-        this.pregunta = pregunta;
-        this.opcion1 = opcion1;
-        this.opcion2 = opcion2;
-        this.opcion3 = opcion3;
-
+        };
     };
+};
+
+class Administracion {
     iniciarPlanilla (){
         const participante0 = new Participante();
         participante0.inscribirse();
@@ -171,27 +149,34 @@ class Inscripcion {
     };
 
     iniciarVotacion (){
-        const participante0 = new Participante()
-        participante0.votar()
+        const participante0 = new Participante();
+        participante0.votar();
     };
 
     iniciarResultados (){
-        const result0 = new Resultado()
-        result0.resultados()
+        const result0 = new Resultado();
+        result0.resultados();
+    };
+    
+    mostrarResultados (){
+        resultados.forEach(resultado => {
+            console.log("==================================");
+            console.log("Enunciado: " + resultado.enunciado);
+            console.log("alternativa1: " + resultado.alternativa1.eleccion1 + " fue de " + resultado.alternativa1.cantidad1 + " votos");
+            console.log("alternativa2: " + resultado.alternativa2.eleccion2 + " fue de " + resultado.alternativa2.cantidad2 + " votos");
+            console.log("alternativa3: " + resultado.alternativa3.eleccion3 + " fue de " + resultado.alternativa3.cantidad3 + " votos");
+            console.log("==================================");
+        });
     };
 };
 
 
-
 const preguntas = [];
 const participantes = [];
-const inscript = new Inscripcion();
-inscript.iniciarPlanilla();
-inscript.iniciarPreguntas();
-inscript.iniciarVotacion();
-inscript.iniciarResultados();
-
-  
-
-
-
+const resultados = [];
+const admin = new Administracion();
+admin.iniciarPlanilla();
+admin.iniciarPreguntas();
+admin.iniciarVotacion();
+admin.iniciarResultados();
+admin.mostrarResultados();

@@ -5,6 +5,13 @@ function validarNumero(numero) {
         return false;
    };
 };
+function validarDatos(dato1,dato2,dato3,dato4) {
+    if (dato1 == "" || dato2 == "" || dato3 == "" || dato4 == "") {
+        return true;
+   } else {
+        return false;
+   };
+}
 function validarEnunciado(enunciado) {
     if (enunciado == "") {
         return true;
@@ -26,7 +33,6 @@ function validarOpciones (voto,indice) {
         return true;
     };
 };
-
 const recopilarVotos = (...votos) => {
     return votos.reduce((arregloAcumulador, votos) => {
       return [...arregloAcumulador, votos];
@@ -83,6 +89,13 @@ for (let i = 1; i <= parseInt(personas) + parseInt(preguntasAHacer); i++) {
         let age = prompt("Edad del participante "+ i);
         let gender = prompt("Genero del participante "+ i);
         let country = prompt("Pais del participante "+ i);
+        while (validarDatos(name,age,gender,country)) {
+        alert("Ningun dato puede estar vacio");
+        name = prompt("Nombre del participante "+ i);
+        age = prompt("Edad del participante "+ i);
+        gender = prompt("Genero del participante "+ i);
+        country = prompt("Pais del participante "+ i);
+        };
         participantes.push(generarParticipante(name,age,gender,country));
     };
     
@@ -125,6 +138,7 @@ for (let i = 0; i < participantes.length; i++) {
 function mostrarResultados(resultados) {
     console.log("===========================================");
     console.log("TABLA DE RESULTADOS");
+    console.log("OPCIONES ESCOGIDAS FUERON:");
     return Object.entries(resultados).map(resultado => {
        return console.log("Alternativa " + resultado[0] + " obtuvo : " + resultado[1] + " votos");
     });
