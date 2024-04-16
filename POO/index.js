@@ -12,7 +12,7 @@ class Persona {
             personas = prompt("¿Cuantas personas participaran en la votacion?");
         };
         for (let i = 1; i <=personas;i++) {
-            let name = prompt("Nombre del participante "+ i); // se pueden añadir propiedades si se quiere
+            let name = prompt("Nombre del participante "+ i);
             let age = prompt("Edad del participante "+ i);
             let sexo = prompt("Sexo del participante "+ i);
             let pais = prompt("Pais del participante "+ i);
@@ -23,7 +23,7 @@ class Persona {
                 sexo = prompt("Sexo del participante "+ i);
                 pais = prompt("Pais del participante "+ i);
             };
-            participantes.push(new Participante(name,age,sexo,pais)); // esta linea tiene que estar en el case final del ultimo dato añadido
+            participantes.push(new Participante(name,age,sexo,pais));
         };
     };
 };
@@ -81,7 +81,7 @@ class Pregunta {
                 opcion3 = prompt("Opcion 3");
             };
             opciones.push(opcion1,opcion2,opcion3);
-            preguntas.push(new Pregunta(pregunta,opciones)); // esta linea tiene que estar en el case final del ultimo dato añadido
+            preguntas.push(new Pregunta(pregunta,opciones));
         };
     };
 };
@@ -117,7 +117,7 @@ class Resultado {
                 break;
             };
           });
-          participantes.forEach((votos,index) => {
+          participantes.forEach((_,index) => {
             switch ((participantes[index].votos[i])) {
               case eleccion1:
                 cantidad1++;
